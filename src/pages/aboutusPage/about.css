@@ -1,0 +1,33 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.about{
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin: 70px auto;
+
+}
+.left-about{
+    width: 50%;
+    margin: 20px;
+  }
+.left-about img{
+    width: 100%;
+    height: 400px;
+}
+.right-about{
+   width: 50%;
+}
+.right-about h3{
+    margin-bottom: 10px;
+    font-size: 20px;
+
+}
+.right-about p{
+    margin-bottom: 20px;
+    font-size: 15px;
+
+}
