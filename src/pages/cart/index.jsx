@@ -8,7 +8,7 @@ const Cart = () => {
     // const [cartProducts, setCartProducts] = useState([]);
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const cartProductsFromRedux = useSelector((state)=> state.cart.cartItem)
+    const cartProductsFromRedux = useSelector((state) => state.cart.cartItem)
     // const getCartProducts = () => {
     //     const products =
     //         JSON.parse(localStorage.getItem("cart")) || [];
@@ -21,7 +21,7 @@ const Cart = () => {
     // }, []);
 
     // const increaseQuantity = (id) => {
-         
+
 
     //     const updatedProducts = cartProducts.map((item) =>
     //         item.id === id
@@ -55,9 +55,10 @@ const Cart = () => {
     // };
 
     const totalPrice = cartProductsFromRedux.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) => total + Number(item.price) * item.quantity,
         0
     );
+   
 
     return (
         <>
@@ -81,18 +82,17 @@ const Cart = () => {
                                 <div className="cart-details">
                                     <h3>{item.title}</h3>
 
-                                    <p>Price: ${item.price}</p>
-
+                                    <p>Price: ${Number(item.price).toFixed(2)}</p>
                                     <div className="quantity">
-                                        <button onClick={()=>dispatch(decreaseQuantity(item.id))}>
+                                        <button onClick={() => dispatch(decreaseQuantity(item.id))}>
                                             -
                                         </button>
 
                                         <span>{item.quantity}</span>
 
                                         <button
-                                            onClick={() => 
-                                              dispatch(increaseQuantity(item.id))
+                                            onClick={() =>
+                                                dispatch(increaseQuantity(item.id))
                                             }
                                         >
                                             +
@@ -100,12 +100,13 @@ const Cart = () => {
                                     </div>
 
                                     <p>
-                                        Total: $
-                                        {item.price * item.quantity}
+
+                                        Total: ${item.price * item.quantity}
+
                                     </p>
 
                                     <button className="remove-btn"
-                                       onClick={()=>dispatch(removeProduct(item.id))}
+                                        onClick={() => dispatch(removeProduct(item.id))}
                                     >
                                         Remove
                                     </button>
@@ -115,11 +116,11 @@ const Cart = () => {
 
                         <div className="mainn-class">
                             <div className="cart-total">
-                                <h2>Total Price: ${totalPrice}</h2>
+                                <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
                             </div>
 
                             <div className="checkoutt-btn">
-                                <button className="checkout-btn" onClick={()=>navigate("/payment")}>Proceed to Payment</button>
+                                <button className="checkout-btn" onClick={() => navigate("/payment")}>Proceed to Payment</button>
                             </div>
                         </div>
                     </div>

@@ -5,25 +5,27 @@ import { axiosinstance } from "../../services/api";
 import { useState, useEffect } from "react";
 import "../addproductpage/index.css";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
-import { useGetProductsQuery } from "../../services/productApi/productApiSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { useGetProductDetailsQuery, useUpdateProductMutation,useGetProductCategoryListQuery} from "../../services/productApi/productApiSlice";
 
 const Edit = () => {
    //  const [load, setLoad] = useState(false);
-    const [product, setProduct] = useState([]);
-    const [categoryList, setCategoryList] = useState([]);
+   const navigate = useNavigate()
      const {id} = useParams()
-   const{data,isLoading,isError} = useGetProductsQuery(id)
+   const{data,isLoading,isError} = useGetProductDetailsQuery(id)
+   const [updatedProduct]= useUpdateProductMutation()
+   const { data: categoryData } = useGetProductCategoryListQuery();
    console.log(data)
    
 
 
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            title: product.title,
-            description: "",
-            price: "",
-            category: ""
+            title: data?.title || "",
+            description: data?.description || "",
+            price: data?.price || "",
+            category: data?.category || ""
         },
 
         validationSchema: Yup.object({
@@ -34,7 +36,17 @@ const Edit = () => {
         }),
 
         onSubmit: async (values) => {
+            await updatedProduct({
+                id,
+                title: values.title,
+                description: values.description,
+                price:values.price,
+                category:values.category
+
+            })
+            toast.success("Product updated successfully")
             console.log(values)
+            navigate("/")
         }
     });
 
@@ -115,7 +127,7 @@ const Edit = () => {
                                     Select Category
                                 </option>
 
-                                {categoryList?.map((category) => (
+                                {categoryData?.map((category) => (
                                     <option
                                         key={category}
                                         value={category}
